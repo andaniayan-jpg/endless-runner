@@ -3,7 +3,6 @@
     padding: 0;
     box-sizing: border-box;
 
-
 }
 
 body {
@@ -22,9 +21,8 @@ body {
 }
 
 #header h1 {
-    font-size: 42;
+    font-size: 42px;
     letter-spacing: 2px;
-
 
 }
 
@@ -35,20 +33,16 @@ body {
 }
 
 #hud {
-
     width: 1200px;
+    max-width: 95%;
     margin: 20px auto;
-
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
 
-
-
 }
 
 .hudBox {
-
     width: 180px;
     background: #1d2740;
     padding: 12px;
@@ -59,40 +53,42 @@ body {
 
 .hudBox span {
     display: block;
-
     color: #bbbbbb;
     margin-bottom: 8px;
 
+
 }
+
 
 .hudBox b {
     font-size: 24px;
+
 }
-#buttonPanle,
+
+#buttonPanel,
 #difficultyPanel,
-#powerPane {
+#powerPanel {
     margin: 20px auto;
 
 }
 
 button {
     padding: 12px 20px;
-
-    margin: 6px;
-
+    margin: px;
     border: none;
     border-radius: 8px;
     background: #2f7ef7;
     color: white;
     font-size: 16px;
     cursor: pointer;
-    transition: 0.25;
+    transition: 0.25s;
+
 
 }
 
 button:hover {
     background: #5d99ff;
-    transform: translate(-2px);
+    transform: tranlateY(-2px);
 
 }
 
@@ -100,16 +96,24 @@ button:active {
     transform: scale(0.96);
 
 }
+.diffBtn.active {
+    background: #22c55e;
 
-#gameSection {
-    width: 1200px;
-    margin: auto;
 
 }
 
-#gameCnvas {
+#gameSection {
     width: 1200px;
-    height: 600;
+    max-width: 95%;
+    margin: auto;
+    position: relative;
+
+}
+
+#gameCanvas {
+    width: 100%;
+    max-width: 1200px;
+    height: auto;
     display: block;
     margin: auto;
     background: linear-gradient(#7fc8ff, #d8f2ff);
@@ -118,90 +122,33 @@ button:active {
 
 }
 
+#touchControls {
+    display: none;
+    justify-content: space-between;
+    margin-top: 10px;
+
+}
+
+
 #statusPanel {
     width: 1200px;
+    max-width: 95%;
     margin: 20px auto;
 
 }
 
 #messageText {
-    bakcground: #1d2740;
+    background: #1d2740;
     padding: 15px;
     border-radius: 10px;
     border: 2px solid #2f7ef7;
+
 }
 
-#controlPanel,
+
+
+#controlsPanel,
 #playerPanel,
 #weatherPanel,
 #achievementPanel,
-#helpPanel {
-    width: 1200px;
-    margin: 25px auto;
-    padding: 20px;
-    background: #1d2740;
-    border-radius: 10px;
-    border: 2px solid #2f7ef7;
-    text-align: left;
-}
-
-#controlPanel h2,
-#playerPanel h2,
-#weatherPanel h2,
-#achievementPanel h2,
-#helpPanel h2 {
-    margin-bottom: 15px;
-
-}
-
-#controlPanel ul,
-#achievementPanel ul {
-    padding-left: 25px;
-
-}
-
-#controlPanel li,
-#achievementPanel li {
-    margin-bottom: 8px;
-
-}
-
-#footer {
-    margin-top: 40px;
-    padding: 20px;
-    background: #1b2336;
-    border-top: 3px solid #2f7ef7;
-
-}
-
-.hidden {
-    display: none;
-
-}
-
-@media (max-width:1250px) {
-    #hud,
-    #gameSection,
-    #statusPanel,
-    #controlsPanel,
-    #playerPanel,
-    #weatherPanel,
-    #achievementPanel,
-    #helpPanel {
-        width: 95%;
-
-    }
-
-    #gameCanvas {
-        width: 100%;
-        height: auto;
-
-    }
-
-    .hudBox {
-        width: 45%;
-        margin-bottom: 12px;
-    }
-    
-
-}
+#helpPanel,

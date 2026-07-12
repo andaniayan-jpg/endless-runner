@@ -107,5 +107,169 @@ function jump(){
 }
 
 function updatePlayer(){
-    
+    player.velocityY+=gravoty;
+    player.y+=player.velocityY;
+    if(player.y>=groundY-player.height){
+        player.y=groundY-player.height;
+        player.velocityY=0;
+        player.onGround=true;
+        player.jumps=0;
+
+
+    }
 }
+
+function updateGameStats(){
+    score++;
+    distance+=gameSpeed*0.1;
+    if(score%800===0){
+        level++;
+        gameSpeed+=0.5;
+
+    }
+}
+
+function updateHUD(){
+    scoreText.innerText=Math.floor(score);
+    distanceText.innerText=Math.floor(distance)+"m";
+    coinText.innerText=coins;
+    livesText.innerText=lives;
+    levelText.innerText=level;
+
+    var high=localStorage.getItem("runnerHigh");
+
+    if(high==null){
+        high=0;
+
+    }
+
+    if(score>high){
+        high=score;
+        localStorage.setItem("runnerHigh",high);
+
+    }
+
+    highScoreText.innerText=high;
+
+}
+
+function drawSun(){
+    ctx.beginPath();
+    ctx.arc(100,100,45,0,Math.PI*2);
+    ctx.fillStyle="yellow";
+    ctx.fill();
+
+}
+
+function drawCloud(x,y){
+    ctx.fillStyle="white";
+    ctx.beginPath();
+    ctx.arc(x,y,22,0,Math.PI*2);
+    ctx.arc(x+20,y-10,22,0,Math.PI*2);
+    ctx.arc(x+40,y,22,0,Math.PI*2);
+    
+
+}
+
+function drawGround(){
+    groundOffset+=gameSpeed;
+    if(groundOffset>40){
+        groundOffset=0;
+    }
+}
+
+ctx.fillStyle="#3E7D2B";
+ctx.fillReact(0,groundY,canvas.width,groundHeight);
+ctx.strokeStyle="#2d5c20";
+ctx.lineWidth=2;
+
+for(var i=groundOffset;i<canvas.width;i+=40){
+     ctx.beginPath();
+     ctx.moveTo(i,groundY);
+     ctx.lineTo(i+20,groundY+20);
+     ctx.strokeStyle();
+
+
+
+}
+
+function drawGround(){
+    groundOffset+= gameSpeed;
+
+    if(groundOffset>40){
+        groundOffset=0;
+    }
+
+    ctx.fillStyle="#3E7D2B";
+    ctx.fillReact(0,groundY,canvas.width,groundHeight);
+    ctx.strokeStyle="#2d5c20";
+    ctx.lineWidth=2;
+
+    for(var i=groundOffset;i<canvas.width;i+=40){
+
+        ctx.beginPath();
+        ctx.moveTo(i,groundY);
+        ctx.lineTo(i+20,groundY+20);
+        ctx.strokeStyle();
+
+
+    }
+
+
+}
+
+function drawPlayer(){
+    ctx.beginPath();
+    ctx.arc(
+        player.x+player.width/2,
+        player.y+!5,
+        12,
+        0,
+        Math.PI*2
+
+    );
+
+    ctx.fillStyle="#ffe0bd";
+    ctx.fill();
+
+    ctx.fillStyle=player.color;
+    ctx.fillReact(
+        player.x+15,
+        player.y+28,
+        25,
+        28
+    );
+
+    ctx.fillReact(
+        player.x+31,
+        player.y+56,
+
+        8,
+        14
+
+    );
+
+
+}
+
+function draw(){
+    drawSky();
+    drawSun();
+    drawCloud(250,80);
+    drawCloud(520,120);
+    drawCloud(860,70);
+    drawGround();
+    drawPlayer();
+
+}
+
+function update(){
+    if(!gameStarted) return;
+    if(paused) return;
+    if(gameOver) return;
+    updatePlayer();
+    updateGameStats();
+    updateHUD();
+
+}
+
