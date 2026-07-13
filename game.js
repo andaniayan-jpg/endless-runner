@@ -803,4 +803,207 @@ function drawPlayer() {
         ctx.lineWidth = 3;
         ctx.stroke();
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    var legSwig = player.onGround && !player.sliding ? Math.sin(player.legPhase) * 10 : 0;
+    ctx.strokeStyle = "#3a2c1a";
+    ctx.lineWidth = 6;
+    ctx.beginPath();
+    ctx.moveTo(px + w * 0.35, by + h);
+    ctx.lineTo(px + w * 0.35 + legSwing, by + h + 16);
+    ctx.moveTo(px + w * 0.65, by + h);
+    ctx.lineTo(px + w * 0.65 - legSwing, by + h + 16);
+    ctx.stroke();
+    ctx.fillStyle = "#2f7ef7";
+    ctx.fillRect(px, by + h * 0.25, w, h * 0.6);
+    ctx.beginPath();
+    ctx.arc(px + w / 2, by + h * 0.15, w * 0.32, 0, Math.PI * 2);
+    ctx.fillStyle = "#ffe0bd";
+    ctx.fill();
+    ctx.strokeStyle = "#ffe0bd";
+    ctx.lineWidth = 5;
+    ctx.beginPath();
+    ctx.moveTo(px + w * 0.15, by + h * 0.35);
+    ctx.lineTo(px + w * 0.15 - legSwing * 0.6, by + h * 0.55);
+    ctx.moveTo(px + w * 0.85, by + h * 0.35);
+    ctx.lineTo(px + w * 0.85 + legSwing * 0.6, by + h * 0.55);
+    ctx.stroke();
+
+    ctx.restore();
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function drawObstacles() {
+    obstacles.forEach(function (o) {
+        if (o.type === "rock") {
+            ctx.fillStyle = "#7a7a7a";
+            ctx.beginPath();
+            ctx.arc(o.x + o.width / 2, o.y + o.height / 2, o.width / 2, 0, Math.PI * 2);
+            ctx.fill();
+        } else if (o.type === "spike") {
+            ctx.fillStyle = "#d64545";
+            ctx.beginPath();
+            ctx.moveTo(o.x, o.y + o.height);
+            ctx.lineTo(o.x + o.width / 2, o.y);
+            ctx.lineTo(o.x + o.width, o.y + o.height);
+            ctx.closePath();
+            ctx.fill();
+        } else if (o.type === "crate") {
+            ctx.fillStyle = "#a5682f";
+            ctx.fillRect(o.x, o.y, o.width, o.height);
+            ctx.strokeStyle = "#6e431a";
+            ctx.lineWidth = 3;
+            ctx.strokeRect(o.x, o.y, o.width, o.height);
+        } else if (o.type === "log") {
+            ctx.fillStyle = "#6b4226";
+            ctx.fillRect(o.x, o.y, o.width, o.height);
+            ctx.strokeStyle = "#4a2c17";
+            for (var i = 0; i < o.width; i += 14) {
+                ctx.beginPath();
+                ctx.arc(o.x + i, o.y + o.height / 2, o.height / 2 - 2, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+        }
+    });
+}
+
+function drawCoins() {
+    coins.forEach(function (c) {
+        var scale = Math.abs(Math.cos(c.angle));
+        ctx.save();
+        ctx.translate(c.x, c.y);
+        ctx.scale(scale, 1);
+        ctx.beginPath();
+        ctx.arc(0, 0, c.radius, 0, Math.PI * 2);
+        ctx.fillStyle = "#ffd700";
+        ctx.fill();
+        ctx.strokeStyle = "#c9a400";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.restore();
+    });
+}
+
+function drawPowerups() {
+    var iconColors = { shield: "#4aa3ff", magnet: "#ff4a9d", slow: "#7dffb0" };
+    powerups.forEach(function (p) {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = iconColors[p.type] || "#ffffff";
+        ctx.fill();
+        ctx.strokeStyle = "white";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.fillStyle = "white";
+        ctx.font = "12px Arial";
+        ctx.textAlign = "center";
+        var letter = p.type === "shield" ? "S" : p.type === "magnet" ? "M" : "T";
+        ctx.fillText(letter, p.x, p.y + 4);
+    });
+}
+
+function drawParticles() {
+    particles.forEach(function (p) {
+        ctx.globalAlpha = Math.max(0, p.life / 30);
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+    });
+}
+
+function drawPauseOverlay() {
+    ctx.fillStyle = "rgba(0,0,0,0.5)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "white";
+    ctx.font = "bold 40px Arial";
+    ctx.textAlign = "center";
+    ctx.fillText("PAUSED", canvas.width / 2, canvas.height / 2);
+}
+
+function draw() {
+    drawSky();
+    drawSun();
+    clouds.forEach(drawCloud);
+    drawBuildings();
+    drawTrees();
+    drawGround();
+    drawObstacles();
+    drawCoins();
+    drawPowerups();
+    drawParticles();
+    drawPlayer();
+
+    if (paused) drawPauseOverlay();
+
+    if (!gameStarted && !gameOver) {
+        ctx.fillStyle = "rgba(0,0,0,0.35)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "white";
+        ctx.font = "bold 34px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText("Press START to Play", canvas.width / 2, canvas.height / 2);
+    }
+}
+
+function update() {
+    if (!gameStarted || paused || gameOver) return;
+    updatePlayer();
+    updateObstacles();
+    updateCoins();
+    updatePowerups();
+    updateParticles();
+    updateSpawning();
+    updateBackground();
+    updateGameStats();
+    updateHUD();
+}
+
+function gameLoop() {
+    update();
+    draw();
+    requestAnimationFrame(gameLoop);
 }
