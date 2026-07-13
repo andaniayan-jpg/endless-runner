@@ -2,6 +2,8 @@
 
 **endlessrun is a simple html and jawascript game, where player can play this game endlessly and enjoy their high score eerytime!**
 
+- **You can get the files in the repository further**
+
 # Why making endless-runner
 
 **AI was used only for functions and domain names, the logic, math and design is my own**
