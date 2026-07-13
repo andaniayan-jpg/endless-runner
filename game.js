@@ -1007,3 +1007,10 @@ function gameLoop() {
     draw();
     requestAnimationFrame(gameLoop);
 }
+
+(function initHigh() {
+    var high = parseInt(localStorage.getItem("runnerHigh")) || 0;
+    highScoreText.innerText = high;
+})();
+
+gameLoop();
