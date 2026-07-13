@@ -2,7 +2,6 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-
 }
 
 body {
@@ -10,26 +9,22 @@ body {
     color: white;
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
-
 }
 
 #header {
     padding: 20px;
     background: #1b2336;
     border-bottom: 3px solid #2f7ef7;
-
 }
 
 #header h1 {
     font-size: 42px;
     letter-spacing: 2px;
-
 }
 
 #header p {
     margin-top: 8px;
     color: #cccccc;
-
 }
 
 #hud {
@@ -39,7 +34,6 @@ body {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-
 }
 
 .hudBox {
@@ -48,33 +42,27 @@ body {
     padding: 12px;
     border-radius: 10px;
     border: 2px solid #2f7ef7;
-
 }
 
 .hudBox span {
     display: block;
     color: #bbbbbb;
     margin-bottom: 8px;
-
-
 }
-
 
 .hudBox b {
     font-size: 24px;
-
 }
 
 #buttonPanel,
 #difficultyPanel,
 #powerPanel {
     margin: 20px auto;
-
 }
 
 button {
     padding: 12px 20px;
-    margin: px;
+    margin: 6px;
     border: none;
     border-radius: 8px;
     background: #2f7ef7;
@@ -82,24 +70,19 @@ button {
     font-size: 16px;
     cursor: pointer;
     transition: 0.25s;
-
-
 }
 
 button:hover {
     background: #5d99ff;
-    transform: tranlateY(-2px);
-
+    transform: translateY(-2px);
 }
 
 button:active {
     transform: scale(0.96);
-
 }
+
 .diffBtn.active {
     background: #22c55e;
-
-
 }
 
 #gameSection {
@@ -107,7 +90,6 @@ button:active {
     max-width: 95%;
     margin: auto;
     position: relative;
-
 }
 
 #gameCanvas {
@@ -119,22 +101,18 @@ button:active {
     background: linear-gradient(#7fc8ff, #d8f2ff);
     border: 4px solid white;
     border-radius: 10px;
-
 }
 
 #touchControls {
     display: none;
     justify-content: space-between;
     margin-top: 10px;
-
 }
-
 
 #statusPanel {
     width: 1200px;
     max-width: 95%;
     margin: 20px auto;
-
 }
 
 #messageText {
@@ -142,16 +120,14 @@ button:active {
     padding: 15px;
     border-radius: 10px;
     border: 2px solid #2f7ef7;
-
 }
-
-
 
 #controlsPanel,
 #playerPanel,
 #weatherPanel,
 #achievementPanel,
-#helpPanel {
+#helpPanel,
+#aboutPanel {
     width: 1200px;
     max-width: 95%;
     margin: 25px auto;
@@ -160,37 +136,37 @@ button:active {
     border-radius: 10px;
     border: 2px solid #2f7ef7;
     text-align: left;
-
-
 }
-
 
 #controlsPanel h2,
 #playerPanel h2,
 #weatherPanel h2,
 #achievementPanel h2,
-#helpPanel h2 {
+#helpPanel h2,
+#aboutPanel h2 {
     margin-bottom: 15px;
-
 }
 
-#controlsPaenl ul,
-#achievementsPanel ul {
+#controlsPanel ul,
+#achievementPanel ul,
+#aboutPanel ul {
     padding-left: 25px;
-
 }
 
 #controlsPanel li,
-#achievementPanel li {
+#achievementPanel li,
+#aboutPanel li {
     margin-bottom: 8px;
+}
 
+#aboutPanel p {
+    margin-bottom: 10px;
+    color: #dddddd;
 }
 
 .achieved {
     color: #22c55e;
     font-weight: bold;
-
-
 }
 
 #footer {
@@ -198,13 +174,6 @@ button:active {
     padding: 20px;
     background: #1b2336;
     border-top: 3px solid #2f7ef7;
-
-
-}
-
-.hidden {
-    display: none !important;
-
 }
 
 .overlay {
@@ -215,18 +184,6 @@ button:active {
     align-items: center;
     justify-content: center;
     z-index: 50;
-
-}
-
-.overlayBox {
-     position: fixed;
-     inset: 0;
-     background: rgba(0,0,0,0.75);
-     display: flex;
-     align-items: center;
-     justify-content: center;
-     z-index: 50;
-
 }
 
 .overlayBox {
@@ -235,19 +192,19 @@ button:active {
     border-radius: 12px;
     padding: 30px 40px;
     text-align: center;
-
-
 }
-
 
 .overlayBox h2 {
     margin-bottom: 15px;
-
 }
 
 .overlayBox p {
     margin-bottom: 8px;
+}
 
+.hidden {
+    display: none !important;
+    pointer-events: none !important;
 }
 
 @media (max-width:1250px) {
@@ -258,18 +215,15 @@ button:active {
     #playerPanel,
     #weatherPanel,
     #achievementPanel,
-    #helpPanel {
+    #helpPanel,
+    #aboutPanel {
         width: 95%;
-
     }
 
     .hudBox {
         width: 45%;
         margin-bottom: 12px;
-
     }
-
-
 }
 
 @media (max-width:768px) {
