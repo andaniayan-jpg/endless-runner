@@ -1,324 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>RunnerRush</title>
-
-    <link rel="stylesheet" href="style.css">
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RunnerRush</title>
+<link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-    
-
-    <header id="header">
-
-        <h1>RunnerRush</h1>
-
-        <p>
-            Endless Runner Game built using HTML, CSS and JavaScript
-        </p>
-
-    </header>
-
-
-
-    
-
-    <section id="hud">
-
-        <div class="hudBox">
-            <span>Score</span>
-            <b id="scoreText">0</b>
-        </div>
-
-        <div class="hudBox">
-            <span>Distance</span>
-            <b id="distanceText">0 m</b>
-        </div>
-
-        <div class="hudBox">
-            <span>Coins</span>
-            <b id="coinText">0</b>
-        </div>
-
-        <div class="hudBox">
-            <span>Lives</span>
-            <b id="livesText">3</b>
-        </div>
-
-        <div class="hudBox">
-            <span>Level</span>
-            <b id="levelText">1</b>
-        </div>
-
-        <div class="hudBox">
-            <span>High Score</span>
-            <b id="highScoreText">0</b>
-        </div>
-
-    </section>
-
-
-
-    
-
-    <section id="buttonPanel">
-
-        <button id="startBtn">Start</button>
-
-        <button id="pauseBtn">Pause</button>
-
-        <button id="resumeBtn">Resume</button>
-
-        <button id="restartBtn">Restart</button>
-
-        <button id="soundBtn">Sound ON</button>
-
-        <button id="themeBtn">Theme</button>
-
-    </section>
-
-
-
-    
-
-    <section id="difficultyPanel">
-
-        <h2>Select Difficulty</h2>
-
-        <button id="easyBtn">Easy</button>
-
-        <button id="normalBtn">Normal</button>
-
-        <button id="hardBtn">Hard</button>
-
-    </section>
-
-
-
-    
-
-    <section id="gameSection">
-
-        <canvas id="gameCanvas"
-                width="1200"
-                height="600">
-        </canvas>
-
-    </section>
-
-
-
-    
-
-    <section id="statusPanel">
-
-        <p id="messageText">
-
-            Press START to begin your adventure.
-
-        </p>
-
-    </section>
-
-
-
-    
-
-    <section id="controlsPanel">
-
-        <h2>Controls</h2>
-
-        <ul>
-
-            <li>Space = Jump</li>
-
-            <li>Shift = Dash</li>
-
-            <li>P = Pause</li>
-
-            <li>R = Restart</li>
-
-            <li>M = Mute</li>
-
-        </ul>
-
-    </section>
-
-
-
-    
-
-    <section id="playerPanel">
-
-        <h2>Player Stats</h2>
-
-        <p>Speed :
-            <b id="speedText">10</b>
-        </p>
-
-        <p>Jump Power :
-            <b id="jumpText">15</b>
-        </p>
-
-        <p>Dash :
-            <b id="dashText">Ready</b>
-        </p>
-
-        <p>Shield :
-            <b id="shieldText">OFF</b>
-        </p>
-
-    </section>
-
-
-
-    
-
-    <section id="powerPanel">
-
-        <h2>Power Ups</h2>
-
-        <button id="shieldBtn">Shield</button>
-
-        <button id="magnetBtn">Coin Magnet</button>
-
-        <button id="boostBtn">Speed Boost</button>
-
-        <button id="lifeBtn">Extra Life</button>
-
-    </section>
-
-
-
-    
-
-    <section id="weatherPanel">
-
-        <h2>Environment</h2>
-
-        <p>
-
-            Current Weather :
-
-            <b id="weatherText">
-
-                Sunny
-
-            </b>
-
-        </p>
-
-        <p>
-
-            Time :
-
-            <b id="timeText">
-
-                Day
-
-            </b>
-
-        </p>
-
-    </section>
-
-
-
-    
-
-    <section id="achievementPanel">
-
-        <h2>Achievements</h2>
-
-        <ul>
-
-            <li id="achievement1">
-                First Jump
-            </li>
-
-            <li id="achievement2">
-                100 Coins
-            </li>
-
-            <li id="achievement3">
-                Reach Level 10
-            </li>
-
-            <li id="achievement4">
-                Run 5000 m
-            </li>
-
-        </ul>
-
-    </section>
-
-
-
-    
-
-    <section id="helpPanel">
-
-        <h2>How To Play</h2>
-
-        <p>
-
-            Run as far as possible while avoiding
-            rocks, spikes and moving obstacles.
-
-        </p>
-
-        <p>
-
-            Collect coins to increase your score.
-
-        </p>
-
-        <p>
-
-            Speed increases continuously,
-            making the game more difficult.
-
-        </p>
-
-        <p>
-
-            Collect power-ups to survive longer.
-
-        </p>
-
-    </section>
-
-
-
-    
-
-    <footer id="footer">
-
-        <p>
-
-            RunnerRush © 2026
-
-        </p>
-
-        <p>
-
-            Developed using HTML, CSS and JavaScript
-
-        </p>
-
-    </footer>
-
-
-
-    <script src="game.js"></script>
-
+<header id="header">
+    <h1>RunnerRush</h1>
+    <p>Endless Runner Game built using HTML, CSS and JavaScript</p>
+</header>
+
+<section id="hud">
+    <div class="hudBox"><span>Score</span><b id="scoreText">0</b></div>
+    <div class="hudBox"><span>Distance</span><b id="distanceText">0 m</b></div>
+    <div class="hudBox"><span>Coins</span><b id="coinText">0</b></div>
+    <div class="hudBox"><span>Lives</span><b id="livesText">3</b></div>
+    <div class="hudBox"><span>Level</span><b id="levelText">1</b></div>
+    <div class="hudBox"><span>High Score</span><b id="highScoreText">0</b></div>
+</section>
+
+<section id="buttonPanel">
+    <button id="startBtn">Start</button>
+    <button id="pauseBtn">Pause</button>
+    <button id="resumeBtn">Resume</button>
+    <button id="restartBtn">Restart</button>
+    <button id="soundBtn">Sound ON</button>
+</section>
+
+<section id="difficultyPanel">
+    <h2>Select Difficulty</h2>
+    <button id="easyBtn" class="diffBtn">Easy</button>
+    <button id="normalBtn" class="diffBtn active">Normal</button>
+    <button id="hardBtn" class="diffBtn">Hard</button>
+</section>
+
+<section id="gameSection">
+    <canvas id="gameCanvas" width="1200" height="600"></canvas>
+    <div id="touchControls">
+        <button id="touchJump">▲ Jump</button>
+        <button id="touchSlide">▼ Slide</button>
+    </div>
+</section>
+
+<section id="statusPanel">
+    <p id="messageText">Press START to begin your adventure.</p>
+</section>
+
+<section id="controlsPanel">
+    <h2>Controls</h2>
+    <ul>
+        <li>Space = Jump (press again in air = Double Jump)</li>
+        <li>Arrow Down = Slide</li>
+        <li>P = Pause</li>
+        <li>R = Restart</li>
+        <li>M = Mute</li>
+        <li>Swipe Up/Down on mobile</li>
+    </ul>
+</section>
+
+<section id="playerPanel">
+    <h2>Player Stats</h2>
+    <p>Speed : <b id="speedText">6</b></p>
+    <p>Jump Power : <b id="jumpText">16</b></p>
+    <p>Shield : <b id="shieldText">OFF</b></p>
+    <p>Magnet : <b id="magnetText">OFF</b></p>
+</section>
+
+<section id="weatherPanel">
+    <h2>Environment</h2>
+    <p>Current Biome : <b id="weatherText">Forest</b></p>
+</section>
+
+<section id="achievementPanel">
+    <h2>Achievements</h2>
+    <ul>
+        <li id="achievement1">First Jump</li>
+        <li id="achievement2">100 Coins</li>
+        <li id="achievement3">Reach Level 10</li>
+        <li id="achievement4">Run 5000 m</li>
+    </ul>
+</section>
+
+<section id="helpPanel">
+    <h2>How To Play</h2>
+    <p>Run as far as possible while avoiding rocks, spikes, crates and logs.</p>
+    <p>Collect coins to increase your score, and grab power-ups to survive longer.</p>
+    <p>Speed increases continuously, making the game more difficult over time.</p>
+</section>
+
+<section id="aboutPanel">
+    <h2>About This Project</h2>
+    <p>I built RunnerRush to practice core front-end game development without relying on any external engine or library. Everything you see is drawn frame by frame on the HTML5 Canvas.</p>
+    <p>Skills and tools I practiced:</p>
+    <ul>
+        <li>HTML5 Canvas 2D rendering (shapes, gradients, transforms, animation frames)</li>
+        <li>Vanilla JavaScript game loops using requestAnimationFrame</li>
+        <li>Game physics: gravity, velocity, collision detection</li>
+        <li>State management (game states, pause/resume, difficulty modes)</li>
+        <li>Procedural spawning and difficulty scaling</li>
+        <li>The Web Audio API for generating sound effects without audio files</li>
+        <li>Responsive CSS layout and mobile touch/swipe controls</li>
+        <li>Browser localStorage for persisting high scores</li>
+        <li>Debugging real bugs: CSS cascade order, event handling, and DOM/canvas overlays</li>
+    </ul>
+</section>
+
+<div id="gameOverOverlay" class="overlay hidden">
+    <div class="overlayBox">
+        <h2>Game Over</h2>
+        <p>Final Score: <b id="finalScore">0</b></p>
+        <p>Coins: <b id="finalCoins">0</b></p>
+        <p>Distance: <b id="finalDistance">0 m</b></p>
+        <p>High Score: <b id="finalHigh">0</b></p>
+        <button id="playAgainBtn">Play Again</button>
+    </div>
+</div>
+
+<footer id="footer">
+    <p>RunnerRush &copy; 2026</p>
+    <p>Developed using HTML, CSS and JavaScript</p>
+</footer>
+
+<script src="game.js"></script>
 </body>
-
 </html>
