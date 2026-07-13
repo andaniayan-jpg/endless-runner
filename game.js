@@ -273,3 +273,13 @@ function update(){
 
 }
 
+function gameLoop(){
+    update();
+    draw();
+
+    requestAnimationFrame(gameLoop);
+
+}
+
+gameLoop();
+
