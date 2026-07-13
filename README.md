@@ -1,6 +1,6 @@
 # endless-runner
 
-**endlessrun is a simple html and jawascript game, where player can play this game endlessly and enjoy their high score eerytime!**
+**endlessrun is project made for #horizons, it is a simple html and jawascript game, where player can play this game endlessly and enjoy their high score eerytime!**
 
 <img width="1774" height="887" alt="ChatGPT Image Jul 13, 2026, 04_26_34 PM" src="https://github.com/user-attachments/assets/a551012a-4373-47b0-8893-53f29a493440" />
 
