@@ -151,4 +151,129 @@ button:active {
 #playerPanel,
 #weatherPanel,
 #achievementPanel,
-#helpPanel,
+#helpPanel {
+    width: 1200px;
+    max-width: 95%;
+    margin: 25px auto;
+    padding: 20px;
+    background: #1d2740;
+    border-radius: 10px;
+    border: 2px solid #2f7ef7;
+    text-align: left;
+
+
+}
+
+
+#controlsPanel h2,
+#playerPanel h2,
+#weatherPanel h2,
+#achievementPanel h2,
+#helpPanel h2 {
+    margin-bottom: 15px;
+
+}
+
+#controlsPaenl ul,
+#achievementsPanel ul {
+    padding-left: 25px;
+
+}
+
+#controlsPanel li,
+#achievementPanel li {
+    margin-bottom: 8px;
+
+}
+
+.achieved {
+    color: #22c55e;
+    font-weight: bold;
+
+
+}
+
+#footer {
+    margin-top: 40px;
+    padding: 20px;
+    background: #1b2336;
+    border-top: 3px solid #2f7ef7;
+
+
+}
+
+.hidden {
+    display: none !important;
+
+}
+
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+
+}
+
+.overlayBox {
+     position: fixed;
+     inset: 0;
+     background: rgba(0,0,0,0.75);
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     z-index: 50;
+
+}
+
+.overlayBox {
+    background: #1d2740;
+    border: 2px solid #2f7ef7;
+    border-radius: 12px;
+    padding: 30px 40px;
+    text-align: center;
+
+
+}
+
+
+.overlayBox h2 {
+    margin-bottom: 15px;
+
+}
+
+.overlayBox p {
+    margin-bottom: 8px;
+
+}
+
+@media (max-width:1250px) {
+    #hud,
+    #gameSection,
+    #statusPanel,
+    #controlsPanel,
+    #playerPanel,
+    #weatherPanel,
+    #achievementPanel,
+    #helpPanel {
+        width: 95%;
+
+    }
+
+    .hudBox {
+        width: 45%;
+        margin-bottom: 12px;
+
+    }
+
+
+}
+
+@media (max-width:768px) {
+    #touchControls {
+        display: flex;
+    }
+}
