@@ -370,3 +370,437 @@ function restartGame(){
 var obstacleTypes = ["rock", "spike", "crate", "log"];
 
 
+function spawnObstacle() {
+    var type = obstacleTypes[Math.floor(Math.random() * obstacleTypes.length)];
+    var w = 40, h = 40;
+    if (type === "rock") { w = 44; h = 44; }
+    if (type === "spike") { w = 34; h = 34; }
+    if (type === "crate") { w = 46; h = 46; }
+    if (type === "log") { w = 70; h = 30; }
+
+    obstacles.push({
+        c: canvas.width + 20,
+        y: groundY - h,
+        width: w,
+        height: h,
+        type: type
+    });
+}
+
+function spawnCoins() {
+    var count = 3 + Math.floor(Math.random() * 5);
+    var startX = canvas.width + 40;
+    var arcHeight = Math.random() < 0.5 ? 0 : 80;
+    var baseY = groundY - 60 - Math.random() * 60;
+    for (var i = 0; i < count; i++) {
+        var t = i / (count - 1 || 1);
+        var yOff = arcHeight ? Math.sin(t * Math.PI) * arcHeight : 0;
+        coins.push({
+            x: startX + i * 34,
+            y: baseY - yOff,
+            radius: 10,
+            angle: Math.random() * Math.PI * 2,
+            collected: false
+        });
+    }
+}
+
+var powerTypes = ["shield", "magnet", "slow"];
+function spawnPowerup() {
+    var type = powerTypes[Math.floor(Math.random() * powerTypes.length)];
+    powerups.push({
+        x: canvas.width + 20,
+        y: groundY - 130 - Math.random() * 40,
+        radius: 16,
+        type: type
+
+    });
+}
+
+function spawnDustBurst(x, y, count) {
+    for (var i = 0; i < count; i++) {
+        particles.push({
+            x: x, y: y,
+            vx: (Math.random() - 0.5) * 3,
+            vy: -Math.random() * 3,
+            life: 25 + Math.random() * 10,
+            color: "rgba(200,200,200,0.7)",
+            size: 3 + Math.random() * 3
+        });
+    }
+}
+
+function spawnCoinSparkle(x, y) {
+    for (var i = 0; i < 8; i++) {
+        particles.push({
+            X: x, y: y,
+            vx: (Math.random() - 0.5) * 4,
+            vy: (Math.random() - 0.5) * 4,
+            life: 20,
+            color: "rgba(255,215,0,0.9)",
+            size: 2 + Math.random() * 2
+
+
+        });
+    }
+}
+
+function reactsCollide(a, b) {
+    return a.x < b.x + b.width && 
+           a.x + a.width > b.x &&
+           a.y < b.y + b.height &&
+           a.y + a.height > b.y;
+
+
+
+}
+
+function getPlayerHitbox() {
+    if (player.sliding) {
+        return { x: player.x, y: groundY - player.slideHeight, width: player.width, height: player.slideHeight };
+
+    }
+    return { x: player.x, y: player.y, width: player.width, height: player.height };
+
+}
+
+function updatePlayer() {
+    player.velocityY += gravity;
+    player.y += player.velocityY;
+
+    if (player.y >= groundY - player.height) {
+        var wasFalling = player.velocity > 4;
+        player.y = groundY - player.height;
+        player.velocityY = 0;
+        if (!player.onGround&& wasFalling) {
+            spawnDustBurst(player.x + player.width / 2, groundY, 8);
+
+        }
+        player.onGround = true;
+        player.jumps = 0;
+
+    } else {
+        player.onGround = false;
+    
+    }
+
+    if (player.sliding) {
+        player.slideTimer--;
+        if (player.slideTimer <= 0) player.sliding = false;
+
+    }
+
+    if (player.onGround && !player.sliding) {
+        player.legPhase += 0.35 + gameSpeed * 0.02;
+
+    }
+
+    if (player.hitFlash > 0) player.hitFLASH--;
+    if (player.shieldTime > 0) player.shieldTime--;
+    if (player.magnetTime > 0) player.magnetTime--;
+
+}
+function updateObstacles() {
+    for (var i = obstacles.length- 1; i >= 0; i--) {
+        var o = obstacles[i];
+        o.x -= gameSpeed;
+        if (o.x + o.width < -10) {
+            obstacles.splice(i, 1);
+            continue;
+        }
+
+        if (reactsCollide(getPlayerHitbox(), o)) {
+            handleHit();
+            obstacles.splice(i, 1);
+        }
+    }
+}
+
+function updateCoins() {
+    for (var i = coins.length - 1; i >= 0; i--) {
+        var c = coins[i];
+        c.x -= gameSpeed;
+        c.angle += 0.15;
+
+        if (player.magnetTime > 0) {
+            var pcx = player.x + player.width / 2;
+            var pcy = player.y + player.height / 2;
+            var dx = pcx - c.x, dy = pcy - c.y;
+            var dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 220) {
+                c.x += dx * 0.18;
+                c.y += dy * 0.18;
+            }
+        }
+
+        if (c.x < -20) { coins.splice(i, 1); continue; }
+
+        var box = getPlayerHitbox();
+        var dx2 = (box.x + box.width / 2) - c.x;
+        var dy2 = (box.y + box.height / 2) - c.y;
+        if (Math.sqrt(dx2 * dx2 + dy2 * dy2) < 26) {
+            coinCount++;
+            score += 25;
+            sfxCoin();
+            spawnCoinSparkle(c.x, c.y);
+            coins.splice(i, 1);
+            checkAchievements();
+        }
+    }
+}
+
+function updatePowerups() {
+    for (var i = powerups.length - 1; i >= 0; i--) {
+        var p = powerups[i];
+        p.x -= gameSpeed;
+        if (p.x < -20) { powerups.splice(i, 1); continue; }
+
+        var box = getPlayerHitbox();
+        var dx = (box.x + box.width / 2) - p.x;
+        var dy = (box.y + box.height / 2) - p.y;
+        if (Math.sqrt(dx * dx + dy * dy) < 30) {
+            applyPowerup(p.type);
+            powerups.splice(i, 1);
+        }
+    }
+}
+
+function applyPowerup(type) {
+    sfxPower();
+    if (type === "shield") { player.shieldTime = 420; shieldText.innerText = "ON"; }
+    if (type === "magnet") { player.magnetTime = 420; magnetText.innerText = "ON"; }
+    if (type === "slow") {
+        var oldSpeed = gameSpeed;
+        gameSpeed = Math.max(3, gameSpeed * 0.55);
+        setTimeout(function () { gameSpeed = oldSpeed; }, 4000);
+    }
+}
+
+function handleHit() {
+    if (player.shieldTime > 0) {
+        player.shieldTime = 0;
+        spawnDustBurst(player.x + player.width / 2, player.y + player.height / 2, 14);
+        return;
+    }
+    lives--;
+    player.hitFlash = 30;
+    sfxHit();
+    spawnDustBurst(player.x + player.width / 2, player.y + player.height / 2, 12);
+    if (lives <= 0) {
+        endGame();
+    }
+}
+
+function updateParticles() {
+    for (var i = particles.length - 1; i >= 0; i--) {
+        var p = particles[i];
+        p.x += p.vx - gameSpeed * 0.3;
+        p.y += p.vy;
+        p.vy += 0.1;
+        p.life--;
+        if (p.life <= 0) particles.splice(i, 1);
+    }
+}
+
+function updateSpawning() {
+    var settings = difficultySettings[difficulty];
+    spawnTimer--;
+    if (spawnTimer <= 0) {
+        spawnObstacle();
+        var base = 70 - level * 2;
+        base = Math.max(30, base);
+        spawnTimer = (base + Math.random() * 40) * settings.spawnMult;
+    }
+
+    coinSpawnTimer--;
+    if (coinSpawnTimer <= 0) {
+        spawnCoinRow();
+        coinSpawnTimer = 90 + Math.random() * 80;
+    }
+
+    powerupTimer--;
+    if (powerupTimer <= 0) {
+        spawnPowerup();
+        powerupTimer = 600 + Math.random() * 400;
+    }
+}
+
+function updateBackground() {
+    groundOffset += gameSpeed;
+    if (groundOffset > 40) groundOffset -= 40;
+
+    clouds.forEach(function (c) {
+        c.x -= c.speed;
+        if (c.x < -80) c.x = canvas.width + 80;
+    });
+
+    buildings.forEach(function (b) {
+        b.x -= gameSpeed * 0.3;
+        if (b.x < -100) b.x += 8 * 180;
+    });
+
+    trees.forEach(function (t) {
+        t.x -= gameSpeed * 0.6;
+        if (t.x < -60) t.x += 10 * 140;
+    });
+
+    biomeTimer++;
+    if (biomeTimer > 1400) {
+        biomeTimer = 0;
+        var next;
+        do { next = biomes[Math.floor(Math.random() * biomes.length)]; } while (next === currentBiome);
+        currentBiome = next;
+        weatherText.innerText = currentBiome;
+    }
+}
+
+function updateGameStats() {
+    score += 1;
+    distance += gameSpeed * 0.1;
+
+    var newLevel = 1 + Math.floor(score / 1500);
+    if (newLevel !== level) {
+        level = newLevel;
+        gameSpeed = baseSpeed + (level - 1) * 0.6;
+    }
+    checkAchievements();
+}
+
+function updateHUD() {
+    scoreText.innerText = Math.floor(score);
+    distanceText.innerText = Math.floor(distance) + " m";
+    coinText.innerText = coinCount;
+    livesText.innerText = lives;
+    levelText.innerText = level;
+    speedText.innerText = gameSpeed.toFixed(1);
+    jumpText.innerText = Math.abs(player.jumpPower);
+    shieldText.innerText = player.shieldTime > 0 ? "ON" : "OFF";
+    magnetText.innerText = player.magnetTime > 0 ? "ON" : "OFF";
+
+    var high = parseInt(localStorage.getItem("runnerHigh")) || 0;
+    if (score > high) {
+        high = Math.floor(score);
+        localStorage.setItem("runnerHigh", high);
+    }
+    highScoreText.innerText = high;
+}
+
+// ---------------- Achievements ----------------
+var achieved = { jump: false, coins100: false, level10: false, dist5000: false };
+function checkAchievements() {
+    if (player.jumps > 0 && !achieved.jump) {
+        achieved.jump = true;
+        document.getElementById("achievement1").classList.add("achieved");
+    }
+    if (coinCount >= 100 && !achieved.coins100) {
+        achieved.coins100 = true;
+        document.getElementById("achievement2").classList.add("achieved");
+    }
+    if (level >= 10 && !achieved.level10) {
+        achieved.level10 = true;
+        document.getElementById("achievement3").classList.add("achieved");
+    }
+    if (distance >= 5000 && !achieved.dist5000) {
+        achieved.dist5000 = true;
+        document.getElementById("achievement4").classList.add("achieved");
+    }
+}
+
+function endGame() {
+    gameOver = true;
+    gameStarted = false;
+    sfxGameOver();
+    messageText.innerText = "Game Over — press Restart or Play Again";
+
+    var high = parseInt(localStorage.getItem("runnerHigh")) || 0;
+    finalScore.innerText = Math.floor(score);
+    finalCoins.innerText = coinCount;
+    finalDistance.innerText = Math.floor(distance) + " m";
+    finalHigh.innerText = high;
+    gameOverOverlay.classList.remove("hidden");
+}
+
+// ---------------- Drawing ----------------
+function drawSky() {
+    var colors = biomeColors[currentBiome];
+    var grad = ctx.createLinearGradient(0, 0, 0, groundY);
+    grad.addColorStop(0, colors.sky1);
+    grad.addColorStop(1, colors.sky2);
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+function drawSun() {
+    ctx.beginPath();
+    ctx.arc(1080, 90, 45, 0, Math.PI * 2);
+    ctx.fillStyle = currentBiome === "Sunset" ? "#ff8c42" : "#ffe066";
+    ctx.fill();
+}
+
+function drawCloud(c) {
+    ctx.save();
+    ctx.globalAlpha = 0.9;
+    ctx.fillStyle = "white";
+    ctx.beginPath();
+    ctx.arc(c.x, c.y, 22 * c.scale, 0, Math.PI * 2);
+    ctx.arc(c.x + 20 * c.scale, c.y - 10 * c.scale, 22 * c.scale, 0, Math.PI * 2);
+    ctx.arc(c.x + 40 * c.scale, c.y, 22 * c.scale, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+}
+
+function drawBuildings() {
+    if (currentBiome !== "City") return;
+    ctx.fillStyle = "rgba(40,45,60,0.6)";
+    buildings.forEach(function (b) {
+        ctx.fillRect(b.x, groundY - b.h, b.w, b.h);
+    });
+}
+
+function drawTrees() {
+    if (currentBiome === "City" || currentBiome === "Desert") return;
+    trees.forEach(function (t) {
+        var x = t.x, s = t.scale;
+        ctx.fillStyle = "#6b4226";
+        ctx.fillRect(x, groundY - 40 * s, 10 * s, 40 * s);
+        ctx.fillStyle = currentBiome === "Snow" ? "#e8f3ff" : "#2f6b2f";
+        ctx.beginPath();
+        ctx.arc(x + 5 * s, groundY - 55 * s, 26 * s, 0, Math.PI * 2);
+        ctx.fill();
+    });
+}
+
+function drawGround() {
+    var colors = biomeColors[currentBiome];
+    ctx.fillStyle = colors.ground;
+    ctx.fillRect(0, groundY, canvas.width, groundHeight);
+    ctx.strokeStyle = colors.groundLine;
+    ctx.lineWidth = 2;
+    for (var i = -40 + groundOffset; i < canvas.width; i += 40) {
+        ctx.beginPath();
+        ctx.moveTo(i, groundY);
+        ctx.lineTo(i + 20, groundY + 20);
+        ctx.stroke();
+    }
+}
+
+function drawPlayer() {
+    var px = player.x;
+    var py = player.y;
+    var w = player.width;
+    var h = player.sliding ? player.slideHeight : player.height;
+    var by = player.sliding ? groundY - player.slideHeight : py;
+
+    ctx.save();
+    if (player.hitFlash > 0 && Math.floor(player.hitFlash / 4) % 2 === 0) {
+        ctx.globalAlpha = 0.4;
+    }
+
+    if (player.shieldTime > 0) {
+        ctx.beginPath();
+        ctx.arc(px + w / 2, by + h / 2, Math.max(w, h) * 0.75, 0, Math.PI * 2);
+        ctx.strokeStyle = "rgba(80,180,255,0.8)";
+        ctx.lineWidth = 3;
+        ctx.stroke();
+    }
+}
