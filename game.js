@@ -8,7 +8,33 @@ var livesText = document.getElementById("livesText");
 var levelText = document.getElementById("levelText");
 var highScoreText = document.getElementById("highScoreText");
 var messageText = document.getElementById("messageText");
+var speedText = document.getElementById("speedText");
+var jumpText = document.getElementById("jumpText");
+var sheildText = document.getElementById("shieldText");
+var magnetText = document.getElementById("magnetText");
+var weatherText = document.getElementById("weatherText");
 var startBtn = document.getElementsById("startBtn");
+
+
+
+
+
+
+
+
+
+
+
+
+
+var soundBtn = document.getElementById("soundBtn");
+var playAgainBtn = document.getElementById("playAgainBtn");
+var gameOverOverlay = document.getElementById("gameOverOverlay")
+var finalScore = document.getElementById("finalScore");
+var finalCoins = document.getElementById("final Coins");
+var finalDistance = document.getElementById("finalDistance");
+var finalHigh = document.getElementById("finalHigh");
+
 var pauseBtn = document.getDocumentById("pauseBtn");
 var resumeBtn = document.getElementById("resumeBtn");
 var restartBtn = document.getElementById("restartBtn");
